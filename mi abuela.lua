@@ -1,3 +1,26 @@
+-- UI
+local gui = Instance.new("ScreenGui", game.CoreGui)
+gui.Name = "PCBaseFinder"
+
+local frame = Instance.new("Frame", gui)
+frame.Size = UDim2.new(0, 300, 0, 400)
+frame.Position = UDim2.new(0, 20, 0.3, 0)
+frame.BackgroundColor3 = Color3.fromRGB(20,20,20)
+
+local layout = Instance.new("UIListLayout", frame)
+
+-- CONFIG
+local levelBoostPerLevel = 68
+
+-- FUNCION CALCULO
+local function calcularBase(total, mult, levels)
+    local basePoints = total / mult
+    local levelBonus = levels * levelBoostPerLevel
+    local approx = basePoints / (1 + (levelBonus / 4000))
+    return math.floor(approx)
+end
+
+-- DETECTAR TEXTOS
 local function scan()
     for _,v in pairs(game:GetDescendants()) do
         if v:IsA("TextLabel") then
@@ -36,4 +59,11 @@ local function scan()
             end
         end
     end
+end
+-- LOOP
+while true do
+    frame:ClearAllChildren()
+    layout.Parent = frame
+    scan()
+    task.wait(2)
 end
